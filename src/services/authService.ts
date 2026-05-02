@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { LoginCredentials, LoginResponse, ApiResponse } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://www.wvgmp.com/backend/api';
 
 class AuthService {
   private api: AxiosInstance;
@@ -40,16 +40,21 @@ class AuthService {
 
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
     try {
-      const response = await this.api.post<ApiResponse<LoginResponse>>(
+      const response = await this.api.post<any>(
         '/auth/login',
         credentials
       );
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.error || 'Login failed');
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Login failed');
       }
-      return response.data.data;
+      // New API returns: { success: true, token, user: { id, email, nombre } }
+      return {
+        token: response.data.token,
+        user: response.data.user,
+        exp: 0,
+      };
     } catch (error: any) {
-      throw new Error(error.response?.data?.error || error.message || 'Login failed');
+      throw new Error(error.response?.data?.message || error.message || 'Login failed');
     }
   }
 
