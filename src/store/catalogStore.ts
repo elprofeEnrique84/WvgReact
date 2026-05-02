@@ -1,5 +1,19 @@
 import { create } from 'zustand';
-import { Equipo, TipoPlanta, UbicacionEquipo, ComponentePiezaEquipo, ConfigEquipoMantencion, Turno, Estado, Faena, Responsable, Actividad, Categoria, Perfil, Cliente } from '../types';
+import {
+  Equipo,
+  TipoPlanta,
+  UbicacionEquipo,
+  ComponentePiezaEquipo,
+  ConfigEquipoMantencion,
+  Turno,
+  Estado,
+  Faena,
+  Responsable,
+  Actividad,
+  Categoria,
+  Perfil,
+  Cliente,
+} from '../types';
 import { catalogService } from '../services/catalogService';
 
 interface CatalogStore {

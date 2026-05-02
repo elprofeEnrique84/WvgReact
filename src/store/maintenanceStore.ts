@@ -1,5 +1,9 @@
 import { create } from 'zustand';
-import { MantencionFaena, MaintenanceFilters, BitacoraMantencion } from '../types';
+import {
+  MantencionFaena,
+  MaintenanceFilters,
+  BitacoraMantencion,
+} from '../types';
 import { maintenanceService } from '../services/maintenanceService';
 
 interface MaintenanceStore {
@@ -19,7 +23,10 @@ interface MaintenanceStore {
   fetchMantenimientoById: (id: number) => Promise<void>;
   fetchBitacora: (id_mantencion: number) => Promise<void>;
   createMantenimiento: (data: Partial<MantencionFaena>) => Promise<void>;
-  updateMantenimiento: (id: number, data: Partial<MantencionFaena>) => Promise<void>;
+  updateMantenimiento: (
+    id: number,
+    data: Partial<MantencionFaena>
+  ) => Promise<void>;
   deleteMantenimiento: (id: number) => Promise<void>;
   setFilters: (filters: Partial<MaintenanceFilters>) => void;
   setSelectedMantenimiento: (mantenimiento: MantencionFaena | null) => void;
@@ -42,7 +49,8 @@ export const useMaintenanceStore = create<MaintenanceStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const currentFilters = filters || get().filters;
-      const response = await maintenanceService.getMantenimientos(currentFilters);
+      const response =
+        await maintenanceService.getMantenimientos(currentFilters);
       set({
         mantenimientos: response.data,
         total: response.total,

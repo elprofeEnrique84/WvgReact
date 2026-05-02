@@ -3,6 +3,7 @@
 ## Proyecto Completo: React + Node.js/Express + MySQL
 
 Este proyecto es una migración completa del sistema CodeIgniter original a una arquitectura moderna y escalable:
+
 - **Frontend**: React 18 + Vite + TypeScript + Tailwind CSS
 - **Backend**: Node.js + Express + MySQL
 - **Autenticación**: JWT Tokens
@@ -12,7 +13,7 @@ Este proyecto es una migración completa del sistema CodeIgniter original a una 
 
 ## 📋 Requisitos
 
-- Node.js 16+ 
+- Node.js 16+
 - npm o yarn
 - Base de datos MySQL accesible (ya configurada en 162.241.62.162)
 
@@ -23,11 +24,13 @@ Este proyecto es una migración completa del sistema CodeIgniter original a una 
 ### 1. Instalar dependencias
 
 **Frontend:**
+
 ```bash
 npm install
 ```
 
 **Backend:**
+
 ```bash
 cd backend
 npm install
@@ -36,12 +39,14 @@ npm install
 ### 2. Iniciar servicios
 
 **Terminal 1 - Backend (puerto 3001):**
+
 ```bash
 cd backend
 npm start
 ```
 
 **Terminal 2 - Frontend (puerto 5174):**
+
 ```bash
 npm run dev
 ```
@@ -53,6 +58,7 @@ http://localhost:5174/login
 ```
 
 Credenciales de prueba:
+
 ```
 Email: egonzalez@consultoragrupodxas.com
 Password: 123456
@@ -105,6 +111,7 @@ WvgReact/
 El sistema usa **JWT (JSON Web Tokens)** con seguimiento de sesión.
 
 ### Flujo de Autenticación:
+
 1. Usuario ingresa email/password en login
 2. Backend compara con MD5 en tabla `usuario`
 3. Si válido, retorna JWT token (24 horas)
@@ -113,6 +120,7 @@ El sistema usa **JWT (JSON Web Tokens)** con seguimiento de sesión.
 6. Token se valida automáticamente en rutas protegidas
 
 ### Endpoints de Auth:
+
 ```
 POST   /api/auth/login       # { email, password } → { token, user }
 POST   /api/auth/logout      # Logout (cierra sesión)
@@ -124,6 +132,7 @@ GET    /api/auth/me          # Obtener usuario actual (requiere token)
 ## 🌐 API REST Endpoints
 
 ### Autenticación (públicos)
+
 ```
 POST /api/auth/login
 POST /api/auth/logout
@@ -131,6 +140,7 @@ GET  /api/auth/me
 ```
 
 ### Mantenimientos (requieren autenticación)
+
 ```
 GET    /api/mantenimientos          # Listar todos
 GET    /api/mantenimientos/:id      # Obtener uno
@@ -141,6 +151,7 @@ DELETE /api/mantenimientos/:id      # Eliminar
 ```
 
 ### Catálogos (requieren autenticación, solo lectura)
+
 ```
 GET /api/catalogos/equipos
 GET /api/catalogos/estados
@@ -157,6 +168,7 @@ GET /api/catalogos/categorias
 ### Probar API con curl
 
 **Login:**
+
 ```bash
 curl -X POST http://localhost:3001/api/auth/login \
   -H "Content-Type: application/json" \
@@ -164,6 +176,7 @@ curl -X POST http://localhost:3001/api/auth/login \
 ```
 
 **Con Token (reemplazar <TOKEN> con el retornado):**
+
 ```bash
 curl -X GET http://localhost:3001/api/mantenimientos \
   -H "Authorization: Bearer <TOKEN>"
@@ -185,6 +198,7 @@ bash test.sh
 **Usuario:** `wvgmp`
 
 Tablas principales:
+
 - `usuario` - Usuarios del sistema
 - `mantencion_faena` - Órdenes de mantenimiento
 - `bitacora_mantencion` - Registros de actividad
@@ -198,12 +212,14 @@ Tablas principales:
 ## 🔧 Variables de Entorno
 
 **Frontend** (`.env`):
+
 ```
 VITE_API_URL=http://localhost:3001/api
 VITE_APP_NAME=WVG Mantenimiento
 ```
 
 **Backend** (`backend/.env`):
+
 ```
 DB_HOST=162.241.62.162
 DB_USER=wvgmp
@@ -220,6 +236,7 @@ NODE_ENV=development
 ## 📦 Build & Deploy
 
 ### Build Frontend para Producción
+
 ```bash
 npm run build
 ```
@@ -229,6 +246,7 @@ Genera carpeta `dist/` lista para desplegar.
 ### Deploy en AWS Amplify
 
 1. **Conectar repositorio Git**
+
    ```bash
    git init
    git remote add origin <repo-url>
@@ -251,21 +269,25 @@ Genera carpeta `dist/` lista para desplegar.
 ## 🐛 Troubleshooting
 
 ### "Cannot connect to database"
+
 - Verificar que la IP 162.241.62.162 es accesible
 - Revisar credenciales en `.env`
 - Verificar firewall permite puerto 3306
 
 ### "Token expirado"
+
 - Token JWT expira en 24 horas
 - Rellenar token haciendo login nuevamente
 - Frontend maneja automáticamente en authMiddleware
 
 ### "Login invalido"
+
 - Verificar email correcto: `egonzalez@consultoragrupodxas.com`
 - Verificar password: `123456`
 - Contraseñas se comparan con MD5 (sistema original)
 
 ### Frontend no conecta a backend
+
 - Verificar que backend está en `http://localhost:3001`
 - Verificar VITE_API_URL en `.env`
 - Verificar CORS habilitado en `backend/server.js`
@@ -275,6 +297,7 @@ Genera carpeta `dist/` lista para desplegar.
 ## 📚 Tecnologías Utilizadas
 
 ### Frontend
+
 - React 18
 - Vite (build tool)
 - TypeScript
@@ -284,6 +307,7 @@ Genera carpeta `dist/` lista para desplegar.
 - Tailwind CSS (styling)
 
 ### Backend
+
 - Node.js + Express.js
 - MySQL2 (driver)
 - JWT (authentication)
@@ -291,6 +315,7 @@ Genera carpeta `dist/` lista para desplegar.
 - Dotenv
 
 ### Deployment
+
 - AWS Amplify (frontend)
 - AWS EC2/Lambda/ECS (backend)
 
@@ -299,6 +324,7 @@ Genera carpeta `dist/` lista para desplegar.
 ## 🤝 Contribuciones
 
 Para contribuir:
+
 1. Hacer fork del proyecto
 2. Crear rama: `git checkout -b feature/mi-feature`
 3. Commit: `git commit -m 'Add mi-feature'`
@@ -310,6 +336,7 @@ Para contribuir:
 ## 📞 Soporte
 
 Para preguntas o problemas:
+
 - Email: egonzalez@consultoragrupodxas.com
 - Documentación: Ver `backend/README.md`
 
@@ -344,6 +371,7 @@ Este proyecto es propietario de WVG. Todos los derechos reservados.
 ## 🎉 ¡Listo para comenzar!
 
 Backend y Frontend están completamente configurados y listos para:
+
 - ✅ Desarrollo local
 - ✅ Testing
 - ✅ Deploy en producción

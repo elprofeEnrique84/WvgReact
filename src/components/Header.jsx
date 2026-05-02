@@ -7,6 +7,9 @@ export const Header = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const displayName = user?.nombre || user?.nombre_usuario || user?.email || 'Usuario';
+  const displayArea = user?.area || user?.perfil || '';
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -20,7 +23,9 @@ export const Header = () => {
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
             <span className="font-bold text-blue-600">WVG</span>
           </div>
-          <span className="font-bold text-lg hidden sm:inline">WVG Mantenimiento</span>
+          <span className="font-bold text-lg hidden sm:inline">
+            WVG Mantenimiento
+          </span>
         </Link>
 
         {/* User Menu */}
@@ -29,8 +34,10 @@ export const Header = () => {
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center gap-2 hover:bg-blue-700 px-3 py-2 rounded-lg transition"
           >
-            <span className="text-sm">{user?.nombre_usuario}</span>
-            <span className="text-xs bg-blue-500 px-2 py-1 rounded">{user?.area}</span>
+            <span className="text-sm">{displayName}</span>
+            <span className="text-xs bg-blue-500 px-2 py-1 rounded">
+              {displayArea}
+            </span>
           </button>
 
           {/* Dropdown Menu */}

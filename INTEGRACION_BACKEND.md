@@ -3,6 +3,7 @@
 ## Estado Actual
 
 ✅ **Frontend React**: Completamente implementado y listo
+
 - Estructura completa
 - Componentes base
 - Routing
@@ -23,12 +24,15 @@ Todos los endpoints deben retornar JSON con esta estructura:
 ```json
 {
   "success": true,
-  "data": { /* datos */ },
+  "data": {
+    /* datos */
+  },
   "error": null
 }
 ```
 
 En caso de error:
+
 ```json
 {
   "success": false,
@@ -82,12 +86,14 @@ Response 200:
 ### 3. Headers Requeridos
 
 El frontend incluye automáticamente en cada request:
+
 ```
 Authorization: Bearer {token}
 Content-Type: application/json
 ```
 
 El backend debe:
+
 - Validar el token JWT
 - Retornar 401 si token inválido/expirado
 - Retornar 403 si no tiene permisos
@@ -249,7 +255,7 @@ application/
 ```php
 <?php
 class Api_Controller extends CI_Controller {
-  
+
   protected function response($success, $data = null, $error = null) {
     header('Content-Type: application/json');
     echo json_encode([
@@ -259,18 +265,18 @@ class Api_Controller extends CI_Controller {
     ]);
     exit;
   }
-  
+
   protected function checkAuth() {
     $token = $this->input->get_request_header('Authorization');
     $token = str_replace('Bearer ', '', $token);
-    
+
     // Validar JWT
     if (!$this->validateJWT($token)) {
       http_response_code(401);
       $this->response(false, null, 'Token inválido');
     }
   }
-  
+
   protected function validateJWT($token) {
     // Implementar validación JWT
     // ...
@@ -281,6 +287,7 @@ class Api_Controller extends CI_Controller {
 ### 3. Convertir Controladores Existentes
 
 **Antes (CodeIgniter tradicional):**
+
 ```php
 public function index() {
   $data['mantenimientos'] = $this->Mantencion_faena_model->get_all();
@@ -289,19 +296,20 @@ public function index() {
 ```
 
 **Después (API REST):**
+
 ```php
 public function index() {
   $this->checkAuth();
-  
+
   $estado = $this->input->get('estado');
   $equipo = $this->input->get('equipo');
   $page = $this->input->get('page') ?? 0;
   $limit = $this->input->get('limit') ?? 10;
-  
+
   $data = $this->Mantencion_faena_model->get_all_with_filters(
     $estado, $equipo, $page, $limit
   );
-  
+
   $this->response(true, $data);
 }
 ```
@@ -321,12 +329,14 @@ $route['api/mantenimientos/(:num)'] = 'api/Mantenimientos/detail/$1';
 ## Variables de Entorno
 
 **Frontend (.env)**
+
 ```
 VITE_API_URL=http://localhost:8000/api
 VITE_API_TIMEOUT=10000
 ```
 
 **Backend (.env en PHP)**
+
 ```
 JWT_SECRET=tu_secret_super_seguro_aqui
 JWT_EXPIRATION=86400
@@ -362,6 +372,7 @@ Una vez que el backend esté listo:
 4. ✅ Stores Zustand listos
 
 Solo hay que:
+
 1. Actualizar `VITE_API_URL` en `.env`
 2. El frontend consumirá automáticamente los endpoints
 
@@ -370,6 +381,7 @@ Solo hay que:
 ## Documentación de Tipos
 
 Ver `src/types/index.ts` para:
+
 - Estructura de cada entidad
 - Campos opcionales/requeridos
 - Relaciones entre tablas

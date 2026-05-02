@@ -3,6 +3,7 @@
 ## ¿Qué se ha creado?
 
 Un **sistema React completo** para reemplazar el PHP/CodeIgniter con:
+
 - ✅ Autenticación (Login/JWT)
 - ✅ Dashboard con KPIs
 - ✅ Listado de mantenimientos
@@ -16,11 +17,13 @@ Un **sistema React completo** para reemplazar el PHP/CodeIgniter con:
 ## 📋 ANTES DE EMPEZAR
 
 ### Requisitos
-- **Node.js** 16+ 
+
+- **Node.js** 16+
 - **npm** o **yarn**
 - **Terminal/CMD** para ejecutar comandos
 
 ### Verificar instalación
+
 ```bash
 node --version  # v18+ recomendado
 npm --version   # 8+ recomendado
@@ -31,22 +34,27 @@ npm --version   # 8+ recomendado
 ## 🔧 INSTALACIÓN (5 minutos)
 
 ### Paso 1: Navegar a la carpeta
+
 ```bash
 cd /Users/enrique/WvgReact
 ```
 
 ### Paso 2: Instalar dependencias
+
 ```bash
 npm install
 ```
-*Esto descargará ~500MB de paquetes*
+
+_Esto descargará ~500MB de paquetes_
 
 ### Paso 3: Crear archivo .env
+
 ```bash
 cp .env.example .env
 ```
 
 ### Paso 4: Editar .env (importante)
+
 ```bash
 # Abrir en editor
 nano .env
@@ -55,6 +63,7 @@ code .env
 ```
 
 Cambiar:
+
 ```
 VITE_API_URL=http://localhost:8000/api
 ```
@@ -62,6 +71,7 @@ VITE_API_URL=http://localhost:8000/api
 A la URL correcta de tu backend (cuando esté listo).
 
 ### Paso 5: Iniciar servidor
+
 ```bash
 npm run dev
 ```
@@ -73,6 +83,7 @@ npm run dev
 ## 🎮 PRUEBA DE FUNCIONALIDAD
 
 ### Login (actualmente sin validación real)
+
 ```
 Email: test@example.com
 Password: cualquier cosa
@@ -81,10 +92,12 @@ Password: cualquier cosa
 **Nota**: Funciona localmente sin API. Cuando el backend esté listo, validará credenciales.
 
 ### Dashboard
+
 - Ver KPIs con números ficticios
 - Ver tabla de mantenimientos ficticios
 
 ### Mantenimientos
+
 - Ver listado filtrable
 - Filtrar por estado o equipo
 - Buscar por nombre
@@ -113,6 +126,7 @@ Password: cualquier cosa
 ## 💻 COMANDOS ÚTILES
 
 ### Desarrollo
+
 ```bash
 npm run dev          # Inicia servidor localhost:5173 con hot reload
 npm run build        # Compila para producción
@@ -121,6 +135,7 @@ npm run lint         # Verifica sintaxis (cuando ESLint esté configurado)
 ```
 
 ### Limpiar caché (si hay problemas)
+
 ```bash
 rm -rf node_modules
 rm -rf .venv
@@ -132,12 +147,14 @@ npm install
 ## 🔌 INTEGRACIÓN CON API (PRÓXIMO PASO)
 
 ### Estado Actual
+
 - Frontend ✅ Completo
 - Backend API ⏳ Necesita implementación
 
 ### Cuando el Backend esté listo:
 
 1. **Actualizar .env**
+
    ```
    VITE_API_URL=http://tu-servidor:8000/api
    ```
@@ -152,6 +169,7 @@ npm install
 Ver `INTEGRACION_BACKEND.md` para lista completa.
 
 **Principales:**
+
 - `POST /api/auth/login` - Autenticación
 - `GET /api/mantenimientos` - Listado
 - `GET /api/equipos` - Catálogos
@@ -162,6 +180,7 @@ Ver `INTEGRACION_BACKEND.md` para lista completa.
 ## 🎨 PERSONALIZACIÓN
 
 ### Cambiar colores
+
 ```javascript
 // tailwind.config.js
 theme: {
@@ -174,6 +193,7 @@ theme: {
 ```
 
 ### Agregar nueva página
+
 ```bash
 # 1. Crear archivo en src/pages/
 mkdir src/pages/MiPagina.jsx
@@ -185,6 +205,7 @@ mkdir src/pages/MiPagina.jsx
 ```
 
 ### Cambiar estilos
+
 - Usar clases Tailwind directamente en JSX
 - Ej: `<div className="bg-blue-600 text-white px-4 py-2">`
 
@@ -193,22 +214,26 @@ mkdir src/pages/MiPagina.jsx
 ## 🐛 SOLUCIÓN DE PROBLEMAS
 
 ### "Module not found: axios"
+
 ```bash
 npm install axios
 ```
 
 ### Puerto 5173 ya en uso
+
 ```bash
 npm run dev -- --port 5174
 ```
 
 ### Problemas con caché
+
 ```bash
 # Limpiar localStorage del navegador
 # F12 → Application → Local Storage → Clear All
 ```
 
 ### Error de CORS (cuando conectes API)
+
 - Backend debe tener CORS habilitado
 - Ver `INTEGRACION_BACKEND.md` para ejemplo
 
@@ -217,6 +242,7 @@ npm run dev -- --port 5174
 ## 📱 RESPONSIVE DESIGN
 
 El frontend ya es responsive:
+
 - ✅ Desktop (1024px+)
 - ✅ Tablet (768px - 1023px)
 - ✅ Mobile (< 768px)
@@ -233,6 +259,7 @@ Sidebar se oculta en móvil → aparece botón ☰
 - ✅ Logout limpia sesión
 
 **No hacer:**
+
 - ❌ Guardar password en localStorage
 - ❌ Exponer secrets en .env del navegador
 - ❌ Confiar solo en validación frontend
@@ -242,11 +269,13 @@ Sidebar se oculta en móvil → aparece botón ☰
 ## 📊 MONITOREO EN DESARROLLO
 
 ### Abrir DevTools (F12)
+
 - **Console** → Ver errores
 - **Network** → Ver requests API (cuando backend esté listo)
 - **Application** → Ver localStorage
 
 ### Zustand DevTools (opcional)
+
 ```bash
 npm install zustand-devtools
 ```

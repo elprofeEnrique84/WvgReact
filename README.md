@@ -37,27 +37,32 @@ src/
 ## Instalación
 
 ### Requisitos
+
 - Node.js 16+
 - npm o yarn
 
 ### Pasos
 
 1. **Instalar dependencias**
+
 ```bash
 npm install
 ```
 
 2. **Configurar variables de entorno**
+
 ```bash
 cp .env.example .env
 ```
 
 Editar `.env` con la URL de tu API:
+
 ```
 VITE_API_URL=http://localhost:8000/api
 ```
 
 3. **Iniciar servidor de desarrollo**
+
 ```bash
 npm run dev
 ```
@@ -74,16 +79,19 @@ npm run preview
 ## Módulos Implementados
 
 ### ✅ Completado
+
 - **Auth**: Login, JWT, localStorage
 - **Dashboard**: KPIs, estadísticas
 - **Layout**: Header, Sidebar, navegación
 
 ### 🔄 En Progreso
+
 - **Mantenimientos CRUD**: Crear, editar, eliminar
 - **Bitácora**: Registro de actividades
 - **Configuración de Equipos**: Matriz de piezas
 
 ### 📋 Pendiente
+
 - **Reportes**: Gráficos y análisis
 - **Usuarios**: Gestión de usuarios
 - **Configuración**: Sistema
@@ -91,6 +99,7 @@ npm run preview
 ## Estructura de Datos
 
 Ver `src/types/index.ts` para entender:
+
 - **MantencionFaena**: Tabla central
 - **BitacoraMantencion**: Registro de actividades
 - **ConfigEquipoMantencion**: Configuración de piezas
@@ -99,16 +108,20 @@ Ver `src/types/index.ts` para entender:
 ## Stores (Zustand)
 
 ### authStore
+
 ```javascript
 const { user, token, login, logout, isLoggedIn } = useAuthStore();
 ```
 
 ### maintenanceStore
+
 ```javascript
-const { mantenimientos, fetchMantenimientos, createMantenimiento } = useMaintenanceStore();
+const { mantenimientos, fetchMantenimientos, createMantenimiento } =
+  useMaintenanceStore();
 ```
 
 ### catalogStore
+
 ```javascript
 const { equipos, estados, fetchAllCatalogs } = useCatalogStore();
 ```
@@ -116,6 +129,7 @@ const { equipos, estados, fetchAllCatalogs } = useCatalogStore();
 ## Servicios API
 
 Todos los servicios están en `src/services/`:
+
 - `authService.login()`, `logout()`, `refreshToken()`
 - `maintenanceService.getMantenimientos()`, `createMantenimiento()`, etc.
 - `catalogService.getEquipos()`, `getEstados()`, etc.
@@ -169,4 +183,5 @@ Usando **Tailwind CSS** para todos los estilos. Ver `tailwind.config.js`.
 ## Desarrollado por
 
 Tu Equipo - 2026
+
 # WvgReact

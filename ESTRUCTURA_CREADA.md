@@ -3,7 +3,9 @@
 ## 📦 Archivos y Carpetas Generadas
 
 ### Tipos TypeScript (`src/types/`)
+
 ✅ `index.ts` - Definición de todas las interfaces basadas en el modelo de datos MySQL:
+
 - Usuario, Perfil, Cliente, AuthState
 - MantencionFaena, Estado, Faena, Turno
 - BitacoraMantencion, Actividad, Categoria, Responsable
@@ -12,77 +14,95 @@
 - Filtros, KPIs, Respuestas API
 
 ### Stores Zustand (`src/store/`)
+
 ✅ `authStore.ts` - Gestión de autenticación
-  - Login/logout
-  - Persistencia de token y usuario
-  - Estado de carga y errores
+
+- Login/logout
+- Persistencia de token y usuario
+- Estado de carga y errores
 
 ✅ `maintenanceStore.ts` - Gestión de mantenimientos
-  - CRUD completo
-  - Filtros dinámicos
-  - Bitácora
-  - Paginación
+
+- CRUD completo
+- Filtros dinámicos
+- Bitácora
+- Paginación
 
 ✅ `catalogStore.ts` - Gestión de catálogos
-  - Cargar todos los catálogos
-  - Equipos, turnos, estados, faenas, etc.
-  - Caché inteligente
+
+- Cargar todos los catálogos
+- Equipos, turnos, estados, faenas, etc.
+- Caché inteligente
 
 ### Servicios API (`src/services/`)
+
 ✅ `authService.ts` - Autenticación
-  - Login, logout, refresh token
-  - Interceptores de request/response
-  - Manejo de errores 401
+
+- Login, logout, refresh token
+- Interceptores de request/response
+- Manejo de errores 401
 
 ✅ `maintenanceService.ts` - Mantenimientos
-  - CRUD mantenimientos
-  - Bitácora
-  - Cambio de estado
+
+- CRUD mantenimientos
+- Bitácora
+- Cambio de estado
 
 ✅ `catalogService.ts` - Catálogos
-  - Getters para todos los catálogos
-  - Sin lógica de negocio compleja
+
+- Getters para todos los catálogos
+- Sin lógica de negocio compleja
 
 ### Componentes (`src/components/`)
+
 ✅ `Header.jsx` - Encabezado con user menu
 ✅ `Sidebar.jsx` - Menú lateral responsive
 
 ### Layouts (`src/layouts/`)
+
 ✅ `MainLayout.jsx` - Layout principal con Header + Sidebar
 
 ### Páginas (`src/pages/`)
+
 ✅ `LoginPage.jsx` - Autenticación
-  - Formulario login
-  - Validaciones
-  - Manejo de errores
+
+- Formulario login
+- Validaciones
+- Manejo de errores
 
 ✅ `DashboardPage.jsx` - Página principal
-  - KPIs (total, planificados, en proceso, atrasados, desviados, completados)
-  - Tasa de completitud
-  - Tabla de últimos mantenimientos
-  - Colores por estado
+
+- KPIs (total, planificados, en proceso, atrasados, desviados, completados)
+- Tasa de completitud
+- Tabla de últimos mantenimientos
+- Colores por estado
 
 ✅ `MantenimientosPage.jsx` - Listado de mantenimientos
-  - Tabla con todos los campos
-  - Filtros por estado, equipo
-  - Búsqueda
-  - Botones de acción (Ver, Editar)
-  - Colores por estado
+
+- Tabla con todos los campos
+- Filtros por estado, equipo
+- Búsqueda
+- Botones de acción (Ver, Editar)
+- Colores por estado
 
 ### Routing
+
 ✅ `App.jsx` - Router principal
-  - Rutas protegidas
-  - Rutas públicas
-  - Redirecciones
+
+- Rutas protegidas
+- Rutas públicas
+- Redirecciones
 
 ✅ `main.jsx` - Punto de entrada React
 
 ### Estilos
+
 ✅ `src/index.css` - Estilos globales
 ✅ `tailwind.config.js` - Configuración Tailwind
 ✅ `postcss.config.js` - PostCSS
 
 ### Configuración
+
 ✅ `package.json` - Dependencias necesarias
 ✅ `vite.config.js` - Configuración Vite
 ✅ `.env.example` - Variables de entorno
@@ -95,6 +115,7 @@
 ## 🎯 Características Implementadas
 
 ### Autenticación
+
 - ✅ Login con email/password
 - ✅ JWT token management
 - ✅ Persistencia localStorage
@@ -102,12 +123,14 @@
 - ✅ Rutas protegidas
 
 ### Dashboard
+
 - ✅ KPIs en cards
 - ✅ Colores por estado
 - ✅ Tabla de últimos mantenimientos
 - ✅ Tasa de completitud
 
 ### Mantenimientos
+
 - ✅ Listado paginado
 - ✅ Filtros dinámicos
 - ✅ Búsqueda
@@ -115,6 +138,7 @@
 - ✅ Badges de estado con colores
 
 ### UI/UX
+
 - ✅ Responsive design
 - ✅ Header y Sidebar
 - ✅ Mobile menu
@@ -126,6 +150,7 @@
 ## 🔄 Próximas Tareas
 
 ### Frontend (React)
+
 - [ ] Formulario crear/editar mantenimiento
 - [ ] Detalle de mantenimiento con timeline
 - [ ] Bitácora con tabla de actividades
@@ -135,6 +160,7 @@
 - [ ] Validaciones de formularios
 
 ### Backend (API REST en PHP)
+
 - [ ] Endpoint `/api/auth/login`
 - [ ] Endpoint `/api/auth/logout`
 - [ ] Endpoint `/api/auth/refresh`
@@ -151,25 +177,25 @@
 
 Todas las interfaces TypeScript mapean las tablas MySQL:
 
-| Tabla MySQL | Tipo TypeScript | Implementado |
-|---|---|---|
-| usuario | Usuario | ✅ |
-| perfil | Perfil | ✅ |
-| cliente | Cliente | ✅ |
-| mantencion_faena | MantencionFaena | ✅ |
-| bitacora_mantencion | BitacoraMantencion | ✅ |
-| config_equipo_mantencion | ConfigEquipoMantencion | ✅ |
-| config_turno_mantencion | ConfigTurnoMantencion | ✅ |
-| equipo | Equipo | ✅ |
-| estado | Estado | ✅ |
-| faena | Faena | ✅ |
-| turno | Turno | ✅ |
-| tipo_planta | TipoPlanta | ✅ |
-| ubicacion_equipo | UbicacionEquipo | ✅ |
-| componente_piezaequipo | ComponentePiezaEquipo | ✅ |
-| actividad | Actividad | ✅ |
-| categoria | Categoria | ✅ |
-| responsable | Responsable | ✅ |
+| Tabla MySQL              | Tipo TypeScript        | Implementado |
+| ------------------------ | ---------------------- | ------------ |
+| usuario                  | Usuario                | ✅           |
+| perfil                   | Perfil                 | ✅           |
+| cliente                  | Cliente                | ✅           |
+| mantencion_faena         | MantencionFaena        | ✅           |
+| bitacora_mantencion      | BitacoraMantencion     | ✅           |
+| config_equipo_mantencion | ConfigEquipoMantencion | ✅           |
+| config_turno_mantencion  | ConfigTurnoMantencion  | ✅           |
+| equipo                   | Equipo                 | ✅           |
+| estado                   | Estado                 | ✅           |
+| faena                    | Faena                  | ✅           |
+| turno                    | Turno                  | ✅           |
+| tipo_planta              | TipoPlanta             | ✅           |
+| ubicacion_equipo         | UbicacionEquipo        | ✅           |
+| componente_piezaequipo   | ComponentePiezaEquipo  | ✅           |
+| actividad                | Actividad              | ✅           |
+| categoria                | Categoria              | ✅           |
+| responsable              | Responsable            | ✅           |
 
 ---
 
@@ -219,6 +245,7 @@ npm run build
 ## 📞 Próxima Fase
 
 Cuando el backend API esté listo, solo necesita:
+
 1. Implementar los endpoints en PHP
 2. Retornar JSON con estructura esperada (ver tipos)
 3. Incluir autenticación JWT

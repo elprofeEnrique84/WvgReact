@@ -36,8 +36,12 @@ export const LoginPage = () => {
             <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl font-bold text-white">WVG</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-800">WVG Mantenimiento</h1>
-            <p className="text-gray-600 mt-2">Sistema de Gestión de Mantenciones</p>
+            <h1 className="text-2xl font-bold text-gray-800">
+              WVG Mantenimiento
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Sistema de Gestión de Mantenciones
+            </p>
           </div>
 
           {/* Form */}
@@ -92,7 +96,10 @@ export const LoginPage = () => {
           {/* Footer */}
           <p className="text-center text-gray-600 text-sm mt-6">
             ¿Problemas para acceder?{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a
+              href="#"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
               Contactar administrador
             </a>
           </p>

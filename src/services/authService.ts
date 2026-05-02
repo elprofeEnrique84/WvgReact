@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { LoginCredentials, LoginResponse, ApiResponse } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://www.wvgmp.com/backend/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 class AuthService {
   private api: AxiosInstance;
@@ -40,10 +41,7 @@ class AuthService {
 
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
     try {
-      const response = await this.api.post<any>(
-        '/auth/login',
-        credentials
-      );
+      const response = await this.api.post<any>('/auth/login', credentials);
       if (!response.data.success) {
         throw new Error(response.data.message || 'Login failed');
       }
@@ -54,7 +52,9 @@ class AuthService {
         exp: 0,
       };
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || error.message || 'Login failed');
+      throw new Error(
+        error.response?.data?.message || error.message || 'Login failed'
+      );
     }
   }
 
@@ -68,13 +68,11 @@ class AuthService {
 
   async refreshToken(): Promise<string> {
     try {
-      const response = await this.api.post<ApiResponse<{ token: string }>>(
-        '/auth/refresh'
-      );
-      if (!response.data.success || !response.data.data) {
+      const response = await this.api.post('/auth/refresh');
+      if (!response.data.success || !response.data.token) {
         throw new Error('Token refresh failed');
       }
-      const token = response.data.data.token;
+      const token = response.data.token;
       localStorage.setItem('auth_token', token);
       return token;
     } catch (error: any) {
@@ -85,7 +83,7 @@ class AuthService {
   async getCurrentUser() {
     try {
       const response = await this.api.get('/auth/me');
-      return response.data.data;
+      return response.data.user;
     } catch (error: any) {
       throw new Error(error.response?.data?.error || error.message);
     }

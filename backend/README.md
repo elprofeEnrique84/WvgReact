@@ -5,14 +5,17 @@ API REST moderna para el sistema de gestión de mantenimientos WVG.
 ## Quick Start
 
 ### 1. Instalar dependencias
+
 ```bash
 npm install
 ```
 
 ### 2. Configurar variables de entorno
+
 El archivo `.env` ya está configurado con las credenciales de la base de datos de producción.
 
 ### 3. Iniciar servidor
+
 ```bash
 npm start
 ```
@@ -37,11 +40,13 @@ backend/
 ## API Endpoints
 
 ### Autenticación (públicos)
+
 - `POST /api/auth/login` - Login con email/password
 - `POST /api/auth/logout` - Logout (cierra sesión)
 - `GET /api/auth/me` - Obtener usuario actual (requiere token)
 
 **Login Request:**
+
 ```json
 {
   "email": "egonzalez@consultoragrupodxas.com",
@@ -50,6 +55,7 @@ backend/
 ```
 
 **Login Response:**
+
 ```json
 {
   "success": true,
@@ -63,6 +69,7 @@ backend/
 ```
 
 ### Mantenimientos (requieren token)
+
 - `GET /api/mantenimientos` - Listar todos
 - `GET /api/mantenimientos/:id` - Obtener uno
 - `GET /api/mantenimientos/:id/bitacora` - Obtener bitácora
@@ -71,6 +78,7 @@ backend/
 - `DELETE /api/mantenimientos/:id` - Eliminar
 
 ### Catálogos (requieren token, solo lectura)
+
 - `GET /api/catalogos/equipos` - Equipos
 - `GET /api/catalogos/estados` - Estados
 - `GET /api/catalogos/turnos` - Turnos
@@ -83,6 +91,7 @@ backend/
 El API usa JWT (JSON Web Tokens) con Bearer authentication.
 
 **Enviar requests autenticadas:**
+
 ```
 Authorization: Bearer <token>
 ```
@@ -94,6 +103,7 @@ Los tokens expiran en 24 horas.
 Conecta a: `162.241.62.162:3306 / wvgmp_wvg`
 
 Tablas principales:
+
 - `usuario` - Usuarios del sistema
 - `mantencion_faena` - Órdenes de mantenimiento
 - `bitacora_mantencion` - Registros de mantenimiento
@@ -105,6 +115,7 @@ Tablas principales:
 ## Desarrollo
 
 ### Variables de entorno (.env)
+
 ```
 DB_HOST=162.241.62.162
 DB_USER=wvgmp
@@ -117,6 +128,7 @@ NODE_ENV=development
 ```
 
 ### Testing con curl
+
 ```bash
 # Login
 curl -X POST http://localhost:3001/api/auth/login \
@@ -133,6 +145,7 @@ curl -X GET http://localhost:3001/api/mantenimientos \
 Para desplegar en Amplify:
 
 1. Crear archivo `amplify.yml`:
+
 ```yaml
 version: 1
 backend:

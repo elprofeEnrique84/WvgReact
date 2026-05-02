@@ -6,7 +6,8 @@ interface CatalogoItem {
   [key: string]: any;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 class CatalogosService {
   private api: AxiosInstance;
@@ -34,7 +35,9 @@ class CatalogosService {
       const response = await this.api.get('/catalogos/equipos');
       return response.data.data || [];
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error fetching equipos');
+      throw new Error(
+        error.response?.data?.message || 'Error fetching equipos'
+      );
     }
   }
 
@@ -43,7 +46,9 @@ class CatalogosService {
       const response = await this.api.get('/catalogos/estados');
       return response.data.data || [];
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error fetching estados');
+      throw new Error(
+        error.response?.data?.message || 'Error fetching estados'
+      );
     }
   }
 
@@ -70,7 +75,9 @@ class CatalogosService {
       const response = await this.api.get('/catalogos/responsables');
       return response.data.data || [];
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error fetching responsables');
+      throw new Error(
+        error.response?.data?.message || 'Error fetching responsables'
+      );
     }
   }
 
@@ -79,7 +86,9 @@ class CatalogosService {
       const response = await this.api.get('/catalogos/categorias');
       return response.data.data || [];
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error fetching categorias');
+      throw new Error(
+        error.response?.data?.message || 'Error fetching categorias'
+      );
     }
   }
 }

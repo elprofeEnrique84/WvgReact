@@ -7,6 +7,7 @@ Tu sistema WVG ha sido **completamente migrado** de CodeIgniter a una arquitectu
 ### ✨ Lo que se creó:
 
 **Backend Node.js/Express** (`/backend/`):
+
 - ✅ `server.js` - Express app con CORS y rutas
 - ✅ `auth.js` - JWT tokens (generación y validación)
 - ✅ `db.js` - Conexión MySQL2 con pool
@@ -19,6 +20,7 @@ Tu sistema WVG ha sido **completamente migrado** de CodeIgniter a una arquitectu
 - ✅ `test.sh` - Script de testing
 
 **Frontend React** (actualizado):
+
 - ✅ `src/services/authService.ts` - Conecta a `/auth/login`
 - ✅ `src/services/mantenimientosService.ts` - Nuevo service
 - ✅ `src/services/catalogosService.ts` - Nuevo service
@@ -26,6 +28,7 @@ Tu sistema WVG ha sido **completamente migrado** de CodeIgniter a una arquitectu
 - ✅ `.env` - Apunta a `http://localhost:3001/api`
 
 **Documentación**:
+
 - ✅ `SETUP.md` - Guía completa de setup y deploy
 - ✅ `backend/README.md` - Documentación API REST
 - ✅ `backend/test.sh` - Pruebas automatizadas
@@ -35,29 +38,34 @@ Tu sistema WVG ha sido **completamente migrado** de CodeIgniter a una arquitectu
 ## 🚀 Cómo Iniciar
 
 ### Paso 1: Instalar dependencias del backend
+
 ```bash
 cd backend
 npm install
 ```
 
 ### Paso 2: Iniciar Backend (Terminal 1)
+
 ```bash
 npm start
 # ✅ Escuchando en http://localhost:3001
 ```
 
 ### Paso 3: Iniciar Frontend (Terminal 2)
+
 ```bash
 npm run dev
 # ✅ Escuchando en http://localhost:5174
 ```
 
 ### Paso 4: Abrir en navegador
+
 ```
 http://localhost:5174/login
 ```
 
 **Credenciales:**
+
 - Email: `egonzalez@consultoragrupodxas.com`
 - Password: `123456`
 
@@ -83,7 +91,7 @@ WvgReact/
 ├── src/
 │   ├── services/
 │   │   ├── authService.ts      # ✏️ Actualizado para /auth/login
-│   │   ├── mantenimientosService.ts  # 🆕 
+│   │   ├── mantenimientosService.ts  # 🆕
 │   │   └── catalogosService.ts       # 🆕
 │   ├── components/            # React componentes
 │   ├── store/                 # Zustand store
@@ -100,6 +108,7 @@ WvgReact/
 ## 🔌 API Endpoints Disponibles
 
 ### Autenticación (públicos)
+
 ```
 POST   /api/auth/login       → { token, user }
 POST   /api/auth/logout      → { success: true }
@@ -107,6 +116,7 @@ GET    /api/auth/me          → { user } (requiere token)
 ```
 
 ### Mantenimientos (requieren token)
+
 ```
 GET    /api/mantenimientos
 GET    /api/mantenimientos/:id
@@ -117,6 +127,7 @@ DELETE /api/mantenimientos/:id (eliminar)
 ```
 
 ### Catálogos (requieren token, lectura)
+
 ```
 GET /api/catalogos/equipos
 GET /api/catalogos/estados
@@ -141,12 +152,14 @@ GET /api/catalogos/categorias
 ## 🧪 Testing
 
 ### Opción 1: Script automatizado
+
 ```bash
 cd backend
 bash test.sh
 ```
 
 ### Opción 2: Con curl
+
 ```bash
 # Login
 curl -X POST http://localhost:3001/api/auth/login \
@@ -163,6 +176,7 @@ curl -X GET http://localhost:3001/api/mantenimientos \
 ## 📊 Base de Datos
 
 **Conectado a:**
+
 - Host: `162.241.62.162`
 - Database: `wvgmp_wvg`
 - User: `wvgmp`
@@ -185,19 +199,20 @@ curl -X GET http://localhost:3001/api/mantenimientos \
 
 ## 🐛 Troubleshooting
 
-| Problema | Solución |
-|----------|----------|
-| `Cannot connect to database` | Verificar IP 162.241.62.162 accesible |
-| `Login fallido` | Email correcto: egonzalez@consultoragrupodxas.com |
-| `Token expired` | JWT expira en 24h, hacer login nuevamente |
-| `Backend no responde` | Verificar que está en puerto 3001 |
-| `CORS error` | CORS habilitado en server.js, verificar FRONTEND_URL |
+| Problema                     | Solución                                             |
+| ---------------------------- | ---------------------------------------------------- |
+| `Cannot connect to database` | Verificar IP 162.241.62.162 accesible                |
+| `Login fallido`              | Email correcto: egonzalez@consultoragrupodxas.com    |
+| `Token expired`              | JWT expira en 24h, hacer login nuevamente            |
+| `Backend no responde`        | Verificar que está en puerto 3001                    |
+| `CORS error`                 | CORS habilitado en server.js, verificar FRONTEND_URL |
 
 ---
 
 ## ✨ Características
 
 ### Frontend React ✅
+
 - Login protegido con JWT
 - Dashboard de mantenimientos
 - CRUD completo
@@ -207,6 +222,7 @@ curl -X GET http://localhost:3001/api/mantenimientos \
 - Responsive design
 
 ### Backend Express ✅
+
 - RESTful API
 - Autenticación JWT
 - MySQL con pool
@@ -216,6 +232,7 @@ curl -X GET http://localhost:3001/api/mantenimientos \
 - Variables de entorno
 
 ### Base de Datos ✅
+
 - 17 tablas relacionadas
 - Usuarios con MD5
 - Mantenimientos con bitácora
@@ -226,12 +243,14 @@ curl -X GET http://localhost:3001/api/mantenimientos \
 ## 🎉 ¡Listo para Producción!
 
 El sistema está completamente funcional y listo para:
+
 - ✅ Desarrollo local
 - ✅ Testing
 - ✅ Deploy en AWS Amplify
 - ✅ Escalabilidad
 
 **Comando para comenzar:**
+
 ```bash
 # Terminal 1
 cd backend && npm install && npm start

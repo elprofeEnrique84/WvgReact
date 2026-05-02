@@ -6,7 +6,8 @@ import { useCatalogStore } from '../store/catalogStore';
 
 export const MantenimientosPage = () => {
   const navigate = useNavigate();
-  const { mantenimientos, fetchMantenimientos, setFilters, filters } = useMaintenanceStore();
+  const { mantenimientos, fetchMantenimientos, setFilters, filters } =
+    useMaintenanceStore();
   const { estados, equipos, fetchEstados, fetchEquipos } = useCatalogStore();
   const [search, setSearch] = useState('');
 
@@ -38,7 +39,9 @@ export const MantenimientosPage = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Mantenimientos</h1>
-            <p className="text-gray-600 mt-1">Gestión de mantenciones preventivas y correctivas</p>
+            <p className="text-gray-600 mt-1">
+              Gestión de mantenciones preventivas y correctivas
+            </p>
           </div>
           <button
             onClick={() => navigate('/mantenimientos/nuevo')}
@@ -59,7 +62,11 @@ export const MantenimientosPage = () => {
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 outline-none"
             />
             <select
-              onChange={(e) => handleFilterChange({ estado: e.target.value ? parseInt(e.target.value) : undefined })}
+              onChange={(e) =>
+                handleFilterChange({
+                  estado: e.target.value ? parseInt(e.target.value) : undefined,
+                })
+              }
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 outline-none"
             >
               <option value="">Todos los estados</option>
@@ -70,7 +77,11 @@ export const MantenimientosPage = () => {
               ))}
             </select>
             <select
-              onChange={(e) => handleFilterChange({ equipo: e.target.value ? parseInt(e.target.value) : undefined })}
+              onChange={(e) =>
+                handleFilterChange({
+                  equipo: e.target.value ? parseInt(e.target.value) : undefined,
+                })
+              }
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 outline-none"
             >
               <option value="">Todos los equipos</option>
@@ -95,37 +106,72 @@ export const MantenimientosPage = () => {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b-2 border-gray-200">
                 <tr>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">ID</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Nombre</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Equipo</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Estado</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Fecha Inicio</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Fecha Término (Proy.)</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Acciones</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    ID
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Nombre
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Equipo
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Estado
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Fecha Inicio
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Fecha Término (Proy.)
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Acciones
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {mantenimientos.map((mant) => (
-                  <tr key={mant.id_mantencion} className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-3 px-4 font-mono text-gray-600">{mant.id_mantencion}</td>
-                    <td className="py-3 px-4 font-medium text-gray-800">{mant.nombre_mantencion}</td>
-                    <td className="py-3 px-4 text-gray-600">{mant.equipo?.nombre_equipo || 'N/A'}</td>
+                  <tr
+                    key={mant.id_mantencion}
+                    className="border-b border-gray-200 hover:bg-gray-50"
+                  >
+                    <td className="py-3 px-4 font-mono text-gray-600">
+                      {mant.id_mantencion}
+                    </td>
+                    <td className="py-3 px-4 font-medium text-gray-800">
+                      {mant.nombre_mantencion}
+                    </td>
+                    <td className="py-3 px-4 text-gray-600">
+                      {mant.equipo?.nombre_equipo || 'N/A'}
+                    </td>
                     <td className="py-3 px-4">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(mant.id_estado)}`}>
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(mant.id_estado)}`}
+                      >
                         {mant.estado?.nombre_estado || 'Desconocido'}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-gray-600">{mant.fecha_inicio}</td>
-                    <td className="py-3 px-4 text-gray-600">{mant.fecha_termino_proyeccion}</td>
+                    <td className="py-3 px-4 text-gray-600">
+                      {mant.fecha_inicio}
+                    </td>
+                    <td className="py-3 px-4 text-gray-600">
+                      {mant.fecha_termino_proyeccion}
+                    </td>
                     <td className="py-3 px-4">
                       <button
-                        onClick={() => navigate(`/mantenimientos/${mant.id_mantencion}`)}
+                        onClick={() =>
+                          navigate(`/mantenimientos/${mant.id_mantencion}`)
+                        }
                         className="text-blue-600 hover:text-blue-800 font-medium mr-3"
                       >
                         Ver
                       </button>
                       <button
-                        onClick={() => navigate(`/mantenimientos/${mant.id_mantencion}/editar`)}
+                        onClick={() =>
+                          navigate(
+                            `/mantenimientos/${mant.id_mantencion}/editar`
+                          )
+                        }
                         className="text-orange-600 hover:text-orange-800 font-medium"
                       >
                         Editar

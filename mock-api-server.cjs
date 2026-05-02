@@ -70,11 +70,31 @@ const mantenimientos = [
 // Catálogos
 const catalogs = {
   estados: [
-    { id_estado: 1, nombre_estado: 'Planificado', descripcion_estado: 'Pendiente de iniciar' },
-    { id_estado: 2, nombre_estado: 'En Proceso', descripcion_estado: 'Actualmente en ejecución' },
-    { id_estado: 3, nombre_estado: 'Atrasado', descripcion_estado: 'Excedido en plazo' },
-    { id_estado: 4, nombre_estado: 'Desviado', descripcion_estado: 'Desviación detectada' },
-    { id_estado: 5, nombre_estado: 'Completado', descripcion_estado: 'Finalizado exitosamente' },
+    {
+      id_estado: 1,
+      nombre_estado: 'Planificado',
+      descripcion_estado: 'Pendiente de iniciar',
+    },
+    {
+      id_estado: 2,
+      nombre_estado: 'En Proceso',
+      descripcion_estado: 'Actualmente en ejecución',
+    },
+    {
+      id_estado: 3,
+      nombre_estado: 'Atrasado',
+      descripcion_estado: 'Excedido en plazo',
+    },
+    {
+      id_estado: 4,
+      nombre_estado: 'Desviado',
+      descripcion_estado: 'Desviación detectada',
+    },
+    {
+      id_estado: 5,
+      nombre_estado: 'Completado',
+      descripcion_estado: 'Finalizado exitosamente',
+    },
   ],
   equipos: [
     { id_equipo: 1, nombre_equipo: 'Bomba A-100', mca_habilitada: 'S' },
@@ -90,7 +110,10 @@ const catalogs = {
 const server = http.createServer((req, res) => {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+  );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Content-Type', 'application/json');
 
@@ -109,7 +132,9 @@ const server = http.createServer((req, res) => {
   // POST /api/login
   if (method === 'POST' && pathname === '/api/login') {
     let body = '';
-    req.on('data', chunk => { body += chunk; });
+    req.on('data', (chunk) => {
+      body += chunk;
+    });
     req.on('end', () => {
       try {
         const input = JSON.parse(body);
@@ -117,63 +142,76 @@ const server = http.createServer((req, res) => {
 
         if (!email || !password) {
           res.writeHead(400);
-          res.end(JSON.stringify({
-            success: false,
-            message: 'Email y contraseña requeridos',
-          }));
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: 'Email y contraseña requeridos',
+            })
+          );
           return;
         }
 
         if (!users[email]) {
           res.writeHead(401);
-          res.end(JSON.stringify({
-            success: false,
-            message: 'Usuario o contraseña incorrectos',
-          }));
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: 'Usuario o contraseña incorrectos',
+            })
+          );
           return;
         }
 
         const user = users[email];
-        const passwordHash = crypto.createHash('md5').update(password.trim()).digest('hex');
+        const passwordHash = crypto
+          .createHash('md5')
+          .update(password.trim())
+          .digest('hex');
 
         if (user.password !== passwordHash) {
           res.writeHead(401);
-          res.end(JSON.stringify({
-            success: false,
-            message: 'Usuario o contraseña incorrectos',
-          }));
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: 'Usuario o contraseña incorrectos',
+            })
+          );
           return;
         }
 
         if (user.mca_habilitada !== 'S') {
           res.writeHead(403);
-          res.end(JSON.stringify({
-            success: false,
-            message: 'Usuario deshabilitado',
-          }));
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: 'Usuario deshabilitado',
+            })
+          );
           return;
         }
 
         const token = crypto.randomBytes(32).toString('hex');
 
         res.writeHead(200);
-        res.end(JSON.stringify({
-          success: true,
-          message: 'Login exitoso',
-          data: {
-            token,
-            user: {
-              id_usuario: user.id_usuario,
-              nombre_usuario: user.nombre_usuario,
-              email_usuario: user.email_usuario,
-              id_perfil: user.id_perfil,
-              nombre_perfil: user.nombre_perfil,
-              area: user.area,
-              id_cliente: user.id_cliente,
-              mca_habilitada: user.mca_habilitada,
+        res.end(
+          JSON.stringify({
+            success: true,
+            message: 'Login exitoso',
+            data: {
+              token,
+              user: {
+                id_usuario: user.id_usuario,
+                nombre_usuario: user.nombre_usuario,
+                email_usuario: user.email_usuario,
+                id_perfil: user.id_perfil,
+                nombre_perfil: user.nombre_perfil,
+                area: user.area,
+                id_cliente: user.id_cliente,
+                mca_habilitada: user.mca_habilitada,
+              },
             },
-          },
-        }));
+          })
+        );
       } catch (e) {
         res.writeHead(400);
         res.end(JSON.stringify({ success: false, message: 'Invalid JSON' }));
@@ -185,60 +223,72 @@ const server = http.createServer((req, res) => {
   // POST /api/logout
   if (method === 'POST' && pathname === '/api/logout') {
     res.writeHead(200);
-    res.end(JSON.stringify({
-      success: true,
-      message: 'Logout exitoso',
-    }));
+    res.end(
+      JSON.stringify({
+        success: true,
+        message: 'Logout exitoso',
+      })
+    );
     return;
   }
 
   // GET /api/mantenimientos
   if (method === 'GET' && pathname === '/api/mantenimientos') {
     res.writeHead(200);
-    res.end(JSON.stringify({
-      success: true,
-      data: mantenimientos,
-      total: mantenimientos.length,
-    }));
+    res.end(
+      JSON.stringify({
+        success: true,
+        data: mantenimientos,
+        total: mantenimientos.length,
+      })
+    );
     return;
   }
 
   // GET /api/estados
   if (method === 'GET' && pathname === '/api/estados') {
     res.writeHead(200);
-    res.end(JSON.stringify({
-      success: true,
-      data: catalogs.estados,
-    }));
+    res.end(
+      JSON.stringify({
+        success: true,
+        data: catalogs.estados,
+      })
+    );
     return;
   }
 
   // GET /api/equipos
   if (method === 'GET' && pathname === '/api/equipos') {
     res.writeHead(200);
-    res.end(JSON.stringify({
-      success: true,
-      data: catalogs.equipos,
-    }));
+    res.end(
+      JSON.stringify({
+        success: true,
+        data: catalogs.equipos,
+      })
+    );
     return;
   }
 
   // GET /api/turnos
   if (method === 'GET' && pathname === '/api/turnos') {
     res.writeHead(200);
-    res.end(JSON.stringify({
-      success: true,
-      data: catalogs.turnos,
-    }));
+    res.end(
+      JSON.stringify({
+        success: true,
+        data: catalogs.turnos,
+      })
+    );
     return;
   }
 
   // 404
   res.writeHead(404);
-  res.end(JSON.stringify({
-    success: false,
-    message: 'Endpoint no encontrado',
-  }));
+  res.end(
+    JSON.stringify({
+      success: false,
+      message: 'Endpoint no encontrado',
+    })
+  );
 });
 
 server.listen(PORT, () => {

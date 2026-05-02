@@ -1,7 +1,20 @@
-import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { MantencionFaena, BitacoraMantencion, MaintenanceFilters, PaginatedResponse, ApiResponse } from '../types';
+import axios, {
+  AxiosInstance,
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
+import {
+  MantencionFaena,
+  BitacoraMantencion,
+  MaintenanceFilters,
+  PaginatedResponse,
+  ApiResponse,
+} from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 class MaintenanceService {
   private api: AxiosInstance;
@@ -14,24 +27,27 @@ class MaintenanceService {
       },
     });
 
-    this.api.interceptors.request.use((config: AxiosRequestConfig) => {
+    this.api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
       const token = localStorage.getItem('auth_token');
       if (token) {
         config.headers = config.headers || {};
-        config.headers.Authorization = `Bearer ${token}`;
+        (config.headers as any).Authorization = `Bearer ${token}`;
       }
       return config;
     });
   }
 
-  async getMantenimientos(filters: MaintenanceFilters): Promise<PaginatedResponse<MantencionFaena>> {
+  async getMantenimientos(
+    filters: MaintenanceFilters
+  ): Promise<PaginatedResponse<MantencionFaena>> {
     try {
-      const response = await this.api.get<ApiResponse<PaginatedResponse<MantencionFaena>>>(
-        '/mantenimientos',
-        { params: filters }
-      );
+      const response = await this.api.get<
+        ApiResponse<PaginatedResponse<MantencionFaena>>
+      >('/mantenimientos', { params: filters });
       if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.error || 'Failed to fetch mantenimientos');
+        throw new Error(
+          response.data.error || 'Failed to fetch mantenimientos'
+        );
       }
       return response.data.data;
     } catch (error: any) {
@@ -67,14 +83,18 @@ class MaintenanceService {
     }
   }
 
-  async createMantenimiento(data: Partial<MantencionFaena>): Promise<MantencionFaena> {
+  async createMantenimiento(
+    data: Partial<MantencionFaena>
+  ): Promise<MantencionFaena> {
     try {
       const response = await this.api.post<ApiResponse<MantencionFaena>>(
         '/mantenimientos',
         data
       );
       if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.error || 'Failed to create mantenimiento');
+        throw new Error(
+          response.data.error || 'Failed to create mantenimiento'
+        );
       }
       return response.data.data;
     } catch (error: any) {
@@ -82,14 +102,19 @@ class MaintenanceService {
     }
   }
 
-  async updateMantenimiento(id: number, data: Partial<MantencionFaena>): Promise<MantencionFaena> {
+  async updateMantenimiento(
+    id: number,
+    data: Partial<MantencionFaena>
+  ): Promise<MantencionFaena> {
     try {
       const response = await this.api.put<ApiResponse<MantencionFaena>>(
         `/mantenimientos/${id}`,
         data
       );
       if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.error || 'Failed to update mantenimiento');
+        throw new Error(
+          response.data.error || 'Failed to update mantenimiento'
+        );
       }
       return response.data.data;
     } catch (error: any) {
@@ -103,7 +128,9 @@ class MaintenanceService {
         `/mantenimientos/${id}`
       );
       if (!response.data.success) {
-        throw new Error(response.data.error || 'Failed to delete mantenimiento');
+        throw new Error(
+          response.data.error || 'Failed to delete mantenimiento'
+        );
       }
     } catch (error: any) {
       throw new Error(error.response?.data?.error || error.message);

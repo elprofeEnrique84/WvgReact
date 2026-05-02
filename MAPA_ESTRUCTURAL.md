@@ -80,6 +80,7 @@ WvgReact/
 ## 📊 MAPEO COMPLETO: MYSQL → TYPESCRIPT → REACT
 
 ### Tabla: usuario
+
 ```typescript
 // Types
 interface Usuario {
@@ -101,6 +102,7 @@ const { user } = useAuthStore(); // Usuario actual
 ```
 
 ### Tabla: mantencion_faena (CORE)
+
 ```typescript
 // Types
 interface MantencionFaena {
@@ -136,7 +138,7 @@ const {
   deleteMantenimiento,
   fetchMantenimientoById,
   setFilters,
-  filters
+  filters,
 } = useMaintenanceStore();
 
 // Página: DashboardPage
@@ -147,6 +149,7 @@ const {
 ```
 
 ### Tabla: bitacora_mantencion
+
 ```typescript
 // Types
 interface BitacoraMantencion {
@@ -170,6 +173,7 @@ await maintenanceService.getBitacora(id_mantencion);
 ```
 
 ### Tabla: config_equipo_mantencion
+
 ```typescript
 // Types
 interface ConfigEquipoMantencion {
@@ -191,6 +195,7 @@ await catalogService.getConfigEquipos(id_mantencion);
 ```
 
 ### Catálogos (Estados, Equipos, Turnos, etc)
+
 ```typescript
 // Store: useCatalogStore
 const {
@@ -205,7 +210,7 @@ const {
   categorias,
   perfiles,
   clientes,
-  fetchAllCatalogs
+  fetchAllCatalogs,
 } = useCatalogStore();
 
 // Servicios: catalogService
@@ -219,6 +224,7 @@ await catalogService.getEquipos();
 ## 🔌 API ENDPOINTS REQUERIDOS
 
 ### Autenticación
+
 ```
 POST /api/auth/login
   Input: { email, password }
@@ -238,6 +244,7 @@ GET /api/auth/me
 ```
 
 ### Mantenimientos
+
 ```
 GET /api/mantenimientos?estado=&equipo=&page=&limit=
   Output: { data: [], total, page, limit, pages }
@@ -265,6 +272,7 @@ GET /api/mantenimientos/:id/bitacora
 ```
 
 ### Catálogos (GET)
+
 ```
 GET /api/equipos
 GET /api/tipos-planta
@@ -288,12 +296,14 @@ Todos retornan: { data: [] }
 ## 📈 PRÓXIMAS FASES
 
 ### Fase 3: Implementar formularios
+
 - [ ] FormularioMantenimiento (crear/editar)
 - [ ] FormularioEquipo
 - [ ] FormularioUsuario
 - [ ] Validaciones con Zod o Yup
 
 ### Fase 4: Agregar más páginas
+
 - [ ] BitacoraPage (historial completo)
 - [ ] EquiposPage (CRUD equipos)
 - [ ] ReportesPage (gráficos)
@@ -301,6 +311,7 @@ Todos retornan: { data: [] }
 - [ ] ConfiguracionPage
 
 ### Fase 5: Componentes avanzados
+
 - [ ] Timeline (Mantenimiento)
 - [ ] Gráficos (Chart.js, Recharts)
 - [ ] Modales
@@ -308,6 +319,7 @@ Todos retornan: { data: [] }
 - [ ] Paginación avanzada
 
 ### Fase 6: Polish y optimización
+
 - [ ] Testing (Jest, RTL)
 - [ ] Error boundaries
 - [ ] Loading states mejorados

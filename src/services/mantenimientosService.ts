@@ -10,7 +10,8 @@ interface Mantenimiento {
   usuario_id?: number;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 class MantenimientosService {
   private api: AxiosInstance;
@@ -38,7 +39,9 @@ class MantenimientosService {
       const response = await this.api.get(`/mantenimientos?limit=${limit}`);
       return response.data.data || [];
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error fetching mantenimientos');
+      throw new Error(
+        error.response?.data?.message || 'Error fetching mantenimientos'
+      );
     }
   }
 
@@ -47,7 +50,9 @@ class MantenimientosService {
       const response = await this.api.get(`/mantenimientos/${id}`);
       return response.data.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error fetching mantenimiento');
+      throw new Error(
+        error.response?.data?.message || 'Error fetching mantenimiento'
+      );
     }
   }
 
@@ -56,7 +61,9 @@ class MantenimientosService {
       const response = await this.api.post('/mantenimientos', data);
       return response.data.id;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error creating mantenimiento');
+      throw new Error(
+        error.response?.data?.message || 'Error creating mantenimiento'
+      );
     }
   }
 
@@ -64,7 +71,9 @@ class MantenimientosService {
     try {
       await this.api.put(`/mantenimientos/${id}`, data);
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error updating mantenimiento');
+      throw new Error(
+        error.response?.data?.message || 'Error updating mantenimiento'
+      );
     }
   }
 
@@ -72,16 +81,22 @@ class MantenimientosService {
     try {
       await this.api.delete(`/mantenimientos/${id}`);
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error deleting mantenimiento');
+      throw new Error(
+        error.response?.data?.message || 'Error deleting mantenimiento'
+      );
     }
   }
 
   async getBitacora(mantenimientoId: number): Promise<any[]> {
     try {
-      const response = await this.api.get(`/mantenimientos/${mantenimientoId}/bitacora`);
+      const response = await this.api.get(
+        `/mantenimientos/${mantenimientoId}/bitacora`
+      );
       return response.data.data || [];
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Error fetching bitacora');
+      throw new Error(
+        error.response?.data?.message || 'Error fetching bitacora'
+      );
     }
   }
 }
