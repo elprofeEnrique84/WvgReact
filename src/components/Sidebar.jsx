@@ -12,6 +12,7 @@ export const Sidebar = () => {
   const menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/mantenimientos', label: 'Mantenimientos', icon: '🔧' },
+    { path: '/digital-twin', label: 'Digital Twin', icon: '🌐' },
     { path: '/bitacora', label: 'Bitácora', icon: '📋' },
     { path: '/equipos', label: 'Equipos', icon: '⚙️' },
     { path: '/reportes', label: 'Reportes', icon: '📈' },

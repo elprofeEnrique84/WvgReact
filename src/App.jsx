@@ -9,6 +9,7 @@ import { useAuthStore } from './store/authStore';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { MantenimientosPage } from './pages/MantenimientosPage';
+import DigitalTwinPage from './pages/DigitalTwinPage';
 
 // Componente protegido
 const ProtectedRoute = ({ children }) => {
@@ -42,6 +43,14 @@ export function App() {
           element={
             <ProtectedRoute>
               <MantenimientosPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/digital-twin"
+          element={
+            <ProtectedRoute>
+              <DigitalTwinPage />
             </ProtectedRoute>
           }
         />
