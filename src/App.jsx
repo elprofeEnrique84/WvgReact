@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,9 +12,9 @@ import { MantenimientosPage } from './pages/MantenimientosPage';
 
 // Componente protegido
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
@@ -22,16 +22,6 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export function App() {
-  const { isLoggedIn, token } = useAuthStore();
-
-  useEffect(() => {
-    // Verificar si hay sesión guardada
-    const savedToken = localStorage.getItem('auth_token');
-    if (savedToken && !token) {
-      // Podrías intentar restaurar la sesión aquí
-    }
-  }, []);
-
   return (
     <Router>
       <Routes>

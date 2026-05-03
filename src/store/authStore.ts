@@ -1,33 +1,58 @@
 import { create } from 'zustand';
-import { authService } from '../services/authService';
+import axios from 'axios';
 
-const storedToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-const storedUser = typeof window !== 'undefined' ? localStorage.getItem('auth_user') : null;
+// En WvgReact/src/store/authStore.js
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export const useAuthStore = create((set) => ({
-  user: storedUser ? JSON.parse(storedUser) : null,
-  token: storedToken || null,
-  isLoggedIn: !!storedToken,
+  user: JSON.parse(localStorage.getItem('user_session')) || null,
+  token: localStorage.getItem('auth_token') || null,
+  isAuthenticated:
+    !!localStorage.getItem('user_session') || !!localStorage.getItem('auth_token'),
+  isLoggedIn:
+    !!localStorage.getItem('user_session') || !!localStorage.getItem('auth_token'),
+  loading: false,
 
-  login: async ({ email, password }: { email: string; password: string }) => {
+  // 2. FUNCIÓN DE LOGIN
+  login: async ({ email, password }) => {
+    set({ loading: true });
     try {
-      const response = await authService.login({ email, password });
-      localStorage.setItem('auth_token', response.token);
-      localStorage.setItem('auth_user', JSON.stringify(response.user));
+      const response = await api.post('/login', { email, password });
+
+      const userData = response.data.user;
+      const token = response.data.token;
+
       set({
-        user: response.user,
-        token: response.token,
+        user: userData,
+        token,
+        isAuthenticated: true,
         isLoggedIn: true,
+        loading: false,
       });
-      return response.user;
+
+      localStorage.setItem('user_session', JSON.stringify(userData));
+      localStorage.setItem('auth_token', token);
+
+      return userData;
     } catch (error) {
-      throw error;
+      set({ loading: false });
+
+      const errorMsg = error.response?.data?.message || 'Error de conexión con el servidor';
+      console.error('Detalle del error en AuthStore:', errorMsg);
+      throw new Error(errorMsg);
     }
   },
 
+  // 3. FUNCIÓN DE LOGOUT
   logout: () => {
+    set({ user: null, token: null, isAuthenticated: false, isLoggedIn: false });
+    localStorage.removeItem('user_session');
     localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_user');
-    set({ user: null, token: null, isLoggedIn: false });
+    // Opcional: limpiar cualquier otra cookie o dato local
   }
 }));
