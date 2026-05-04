@@ -10,6 +10,7 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { MantenimientosPage } from './pages/MantenimientosPage';
 import DigitalTwinPage from './pages/DigitalTwinPage';
+import Dashboard from './pages/Dashboard';
 
 // Componente protegido
 const ProtectedRoute = ({ children }) => {
@@ -58,6 +59,7 @@ export function App() {
         {/* Redirecciones */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
