@@ -4,12 +4,20 @@ import { useDashboard } from '../hooks/useDashboard';
 import StatsBar from '../components/StatsBar';
 import MantencionTable from '../components/MantencionTable';
 
-// Perfil del usuario: obtener desde contexto de sesión real
-// 1 = Admin, 2 = Operador, 3+ = Solo lectura
-const PERFIL = parseInt(sessionStorage.getItem('id_perfil') || '3');
-
 export default function Dashboard() {
   const { data, loading, error, refresh } = useDashboard();
+  const perfil = React.useMemo(() => {
+    const raw = sessionStorage.getItem('id_perfil');
+    const parsed = Number.parseInt(raw ?? '3', 10);
+    return Number.isNaN(parsed) ? 3 : parsed;
+  }, []);
+
+  const safeData = data ?? {
+    en_ejecucion: [],
+    atrasados: [],
+    desviados: [],
+    planificados: [],
+  };
 
   return (
     <div style={styles.root}>
@@ -57,16 +65,16 @@ export default function Dashboard() {
         {!loading && !error && (
           <>
             {/* KPI Cards */}
-            <StatsBar data={data} />
+            <StatsBar data={safeData} />
 
             {/* 3 tablas en columnas */}
             <div style={styles.grid3}>
               <MantencionTable
                 title="Proyectos Atrasados"
-                rows={data.atrasados}
+                rows={safeData.atrasados}
                 accentColor="#ef4444"
                 maxRows={5}
-                perfil={PERFIL}
+                perfil={perfil}
               />
               <MantencionTable
                 title="Proyectos con Desviación"
@@ -77,20 +85,20 @@ export default function Dashboard() {
               />
               <MantencionTable
                 title="En Planificación"
-                rows={data.planificados}
+                rows={safeData.planificados}
                 accentColor="#22c55e"
                 maxRows={5}
-                perfil={PERFIL}
+                perfil={perfil}
               />
             </div>
 
             {/* Tabla principal - En Ejecución */}
             <MantencionTable
               title="Proyectos en Ejecución"
-              rows={data.en_ejecucion}
+              rows={safeData.en_ejecucion}
               accentColor="#3b82f6"
               showActions={true}
-              perfil={PERFIL}
+              perfil={perfil}
             />
           </>
         )}
