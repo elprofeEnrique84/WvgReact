@@ -12,6 +12,10 @@ const DigitalTwinPage = () => {
   const [activeFilters, setActiveFilters] = useState(new Set());
   const [lastClicked, setLastClicked] = useState(null);
 
+  // AI
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState(null);
+
   // Generate data on mount
   useEffect(() => {
     const rndStatus = () => {
@@ -292,6 +296,137 @@ const DigitalTwinPage = () => {
     URL.revokeObjectURL(url);
   };
 
+  // AI analysis
+  const runAiAnalysis = async () => {
+    try {
+      setAiLoading(true);
+      setAiResult(null);
+
+      const visibleSegmentIds = data
+        .filter((d) => activeRings.has(d.ring))
+        .filter((d) => activeFilters.size === 0 || activeFilters.has(d.status))
+        .map((d) => d.id);
+
+      const idsToAnalyze = selectedIds.size > 0 ? [...selectedIds] : visibleSegmentIds;
+
+      const token = localStorage.getItem('auth_token');
+
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+      const resp = await fetch(`${API_BASE_URL}/digital-twin/ai/analisis-monitoreo`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ selectedIds: idsToAnalyze }),
+      });
+
+      const json = await resp.json();
+      setAiResult(json);
+    } catch (e) {
+      console.error('AI analysis error:', e);
+      setAiResult({ success: false, summary: { message: 'Error al ejecutar análisis' } });
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const downloadExcelFromAi = () => {
+    if (!aiResult?.summary) return;
+
+    const total = aiResult.summary.total ?? '';
+    const counts = aiResult.summary.counts ?? {};
+    const recommendations = Array.isArray(aiResult.summary.recommendations)
+      ? aiResult.summary.recommendations
+      : [];
+
+    const header = ['total', 'normal', 'alerta', 'critico', 'inactivo', 'recomendacion_1', 'recomendacion_2'];
+    const row = [
+      total,
+      counts.normal ?? 0,
+      counts.alerta ?? 0,
+      counts.critico ?? 0,
+      counts.inactivo ?? 0,
+      recommendations[0] ?? '',
+      recommendations[1] ?? '',
+    ].map((v) => String(v).replaceAll('"', '""'));
+
+    const csv = `${header.join(',')}\n${row
+      .map((v) => (v.includes(',') || v.includes('\n') ? `"${v}"` : v))
+      .join(',')}`;
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'analisis_ai_digital_twin.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const printPdfFromAi = () => {
+    if (!aiResult?.summary) return;
+
+    const counts = aiResult.summary.counts ?? {};
+    const recommendations = Array.isArray(aiResult.summary.recommendations)
+      ? aiResult.summary.recommendations
+      : [];
+
+    const html = `
+      <html>
+        <head>
+          <title>AI Analysis - Digital Twin</title>
+          <meta charset="utf-8" />
+          <style>
+            body { font-family: Arial, sans-serif; padding: 24px; }
+            h1 { margin: 0 0 8px; font-size: 18px; }
+            .meta { color: #555; margin-bottom: 18px; font-size: 12px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+            th, td { border: 1px solid #ddd; padding: 8px; font-size: 12px; text-align: left; }
+            .rec { margin-top: 10px; }
+            .rec li { margin: 6px 0; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <h1>Resumen Ejecutivo - Análisis AI</h1>
+          <div class="meta">Total segmentos: <b>${aiResult.summary.total ?? 0}</b> · Generado desde Digital Twin</div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Estado</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Normal</td><td>${counts.normal ?? 0}</td></tr>
+              <tr><td>Alerta</td><td>${counts.alerta ?? 0}</td></tr>
+              <tr><td>Crítico</td><td>${counts.critico ?? 0}</td></tr>
+              <tr><td>Inactivo</td><td>${counts.inactivo ?? 0}</td></tr>
+            </tbody>
+          </table>
+
+          <div class="rec">
+            <b>Recomendaciones</b>
+            <ul>
+              <li>${recommendations[0] ?? '—'}</li>
+              <li>${recommendations[1] ?? '—'}</li>
+            </ul>
+          </div>
+        </body>
+      </html>
+    `;
+
+    const w = window.open('', '_blank');
+    if (!w) return;
+
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+    w.focus();
+    w.print();
+  };
+
   const total = data.length;
   const alertas = data.filter(d => d.status === 'alerta').length;
   const crits = data.filter(d => d.status === 'critico').length;
@@ -413,7 +548,73 @@ const DigitalTwinPage = () => {
 
         {/* Info Panel */}
         <aside style={{ width: '260px', minWidth: '260px', background: '#0e1420', borderLeft: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4a5568' }}>Detalle del Segmento</div>
+          <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4a5568' }}>
+            Detalle del Segmento
+          </div>
+
+          {/* AI Panel */}
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ fontSize: '10px', color: '#4a5568', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
+              Análisis AI
+            </div>
+
+            <button
+              type="button"
+              onClick={runAiAnalysis}
+              disabled={aiLoading}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255,255,255,0.08)',
+                background: aiLoading ? 'rgba(245,158,11,0.12)' : 'transparent',
+                color: aiLoading ? '#f59e0b' : '#f59e0b',
+                cursor: aiLoading ? 'not-allowed' : 'pointer',
+                fontFamily: 'Rajdhani, sans-serif',
+                fontWeight: 700,
+                fontSize: '12px',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+            >
+              {aiLoading ? 'Analizando...' : 'Ejecutar Análisis'}
+              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b', opacity: aiLoading ? 0.6 : 1 }} />
+            </button>
+
+            <div style={{ marginTop: '10px' }}>
+              {aiResult ? (
+                <div style={{ background: '#111928', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '10px 12px' }}>
+                  <div style={{ fontSize: '10px', color: '#7d8fa9', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>
+                    Resultado
+                  </div>
+                  <div style={{ fontFamily: 'Share Tech Mono, monospace', color: '#e2e8f0', fontSize: '12px', lineHeight: 1.35 }}>
+                    {aiResult?.summary?.message || aiResult?.summary?.resumen || 'OK'}
+                  </div>
+                  <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '11px' }}>
+                    <div style={{ color: '#7d8fa9' }}>
+                      Total: <span style={{ color: '#e2e8f0', fontFamily: 'Share Tech Mono, monospace' }}>{aiResult?.summary?.total ?? '-'}</span>
+                    </div>
+                    <div style={{ color: '#7d8fa9' }}>
+                      Montada: <span style={{ color: '#22c55e', fontFamily: 'Share Tech Mono, monospace' }}>{aiResult?.summary?.montada ?? '-'}</span>
+                    </div>
+                    <div style={{ color: '#7d8fa9' }}>
+                      Botada: <span style={{ color: '#ef4444', fontFamily: 'Share Tech Mono, monospace' }}>{aiResult?.summary?.botada ?? '-'}</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ fontSize: '11px', color: '#7d8fa9', lineHeight: 1.35 }}>
+                  Selecciona segmentos (opcional) y ejecuta el análisis.
+                </div>
+              )}
+            </div>
+          </div>
+
           <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }} id="panel-body">
             {lastClicked ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', animation: 'fadeSlide 0.2s ease' }}>
