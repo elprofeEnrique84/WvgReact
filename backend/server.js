@@ -99,3 +99,20 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor API ejecutándose en http://localhost:${PORT}`);
 });
+
+// Agrega el dominio de Amplify a los orígenes permitidos
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://main.d3a7cgxq7gzjed.amplifyapp.com' // Tu URL de producción
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  credentials: true
+}));
