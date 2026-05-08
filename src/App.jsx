@@ -14,12 +14,8 @@ import Dashboard from './pages/Dashboard';
 
 // Componente protegido
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
+  // Se permite acceso directo (sin bloqueo por login) para evitar redirecciones.
+  // El acceso quedará controlado por el backend cuando aplique.
   return children;
 };
 
@@ -57,9 +53,8 @@ export function App() {
         />
 
         {/* Redirecciones */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Navigate to="/digital-twin" replace />} />
+        <Route path="*" element={<Navigate to="/digital-twin" replace />} />
       </Routes>
     </Router>
   );

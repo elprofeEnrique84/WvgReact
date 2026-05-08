@@ -4,17 +4,30 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 import { generateToken } from './auth.js';
+import authRouter from './routes/auth.js';
+import catalogosRouter from './routes/catalogos.js';
+import mantenimientosRouter from './routes/mantenimientos.js';
+import digitalTwinRouter from './routes/digitalTwin.js';
 
 // 1. Configuración de variables de entorno
 dotenv.config();
 
 const app = express();
 
-// 2. Configuración de Seguridad (CORS)
-// Esto permite que tu React (puerto 5173) pueda hablar con este servidor
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials: true
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      process.env.FRONTEND_URL || 'http://localhost:5173',
+      'https://main.d3a7cgxq7gzjed.amplifyapp.com'
+    ];
+
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  credentials: true,
 }));
 
 // 3. Middleware para entender JSON
@@ -92,6 +105,12 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 });
+
+// 6. RUTAS (Routers)
+app.use('/api/auth', authRouter);
+app.use('/api/catalogos', catalogosRouter);
+app.use('/api/mantenimientos', mantenimientosRouter);
+app.use('/api/digital-twin', digitalTwinRouter);
 
 // 7. PUERTO Y ARRANQUE
 const PORT = process.env.PORT || 3001;
