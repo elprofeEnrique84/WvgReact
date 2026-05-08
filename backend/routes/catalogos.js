@@ -328,6 +328,14 @@ router.put('/estados/:id', async (req, res) => {
       WHERE id_estado = ?
     `;
     const [result] = await pool.query(query, [nombre, req.params.id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: 'Estado no encontrado' });
+    }
+    res.json({ success: true, message: 'Estado actualizado' });
+  } catch (error) {
+    sendError(res, error);
+  }
+});
 
 router.get('/clientes', async (req, res) => {
   try {

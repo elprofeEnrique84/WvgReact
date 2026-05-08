@@ -427,7 +427,6 @@ const DigitalTwinPage = () => {
     w.print();
   };
 
-  const total = data.length;
   const alertas = data.filter(d => d.status === 'alerta').length;
   const crits = data.filter(d => d.status === 'critico').length;
   const normals = data.filter(d => d.status === 'normal').length;
